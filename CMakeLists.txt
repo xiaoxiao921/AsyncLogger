@@ -6,12 +6,8 @@ set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 set(PUBLIC_HEADER_DIR "${PROJECT_SOURCE_DIR}/include")
 
 # check std::format support
-if(NOT USE_FMT)
-    include(CheckIncludeFileCXX)
-    check_include_file_cxx("format" CXX_FORMAT_SUPPORT)
-else()
-    set(CXX_FORMAT_SUPPORT 0)
-endif()
+include(CheckIncludeFileCXX)
+check_include_file_cxx("format" CXX_FORMAT_SUPPORT)
 
 file(GLOB_RECURSE SRC_FILES
     "${SRC_DIR}/**.cpp"
@@ -22,23 +18,6 @@ file(GLOB_RECURSE PUBLIC_HEADER_FILES
 )
 
 add_library(${PROJECT_NAME} STATIC ${SRC_FILES} ${PUBLIC_HEADER_FILES})
-
-if(CXX_FORMAT_SUPPORT)
-    message(STATUS "Using std::format for formatting, you can set USE_FMT to force fmt::format instead.")
-else()
-    message(STATUS "Using fmt::format for formatting.")
-    include(FetchContent)
-
-    FetchContent_Declare(
-        fmt
-        GIT_REPOSITORY https://github.com/fmtlib/fmt.git
-        GIT_TAG 9.1.0
-        GIT_PROGRESS TRUE
-    )
-    FetchContent_MakeAvailable(fmt)
-
-    target_link_libraries(${PROJECT_NAME} fmt)
-endif()
 
 # does the -lpthread linking for us on Linux
 find_package(Threads REQUIRED)

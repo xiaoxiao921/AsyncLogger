@@ -1,15 +1,8 @@
 #pragma once
-#if !defined(USE_FMT) && CXX_FORMAT_SUPPORT
-    #include <format>
-    #define FORMAT std::format
-    #define VFORMAT std::vformat
-    #define MAKE_FORMAT_ARGS std::make_format_args
-#else
-    #include <fmt/core.h>
-    #define FORMAT fmt::format
-    #define VFORMAT fmt::vformat
-    #define MAKE_FORMAT_ARGS fmt::make_format_args
-#endif
+#include <format>
+#define FORMAT std::format
+#define VFORMAT std::vformat
+#define MAKE_FORMAT_ARGS std::make_format_args
 #include <functional>
 #include "concurrency/shared_queue.hpp"
 #include "LogCapture.hpp"
